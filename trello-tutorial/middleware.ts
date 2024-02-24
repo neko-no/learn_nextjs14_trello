@@ -7,6 +7,7 @@ export default authMiddleware({
   // Routes that can always be accessed, and have
   // no authentication information
   afterAuth(auth, req) {
+    // ログインしているが，marketingページに行こうといた場合
     if(auth.userId && auth.isPublicRoute) {
         let path = '/select-org';
 
@@ -18,10 +19,12 @@ export default authMiddleware({
         return NextResponse.redirect(orgSelection);
     }
 
+    // singin指定ない
     if(!auth.userId && !auth.isPublicRoute) {
         return redirectToSignIn({ returnBackUrl: req.url})
     }
 
+    // ユーザーが組織に所属していない場合は，選択画面に飛ばす
     if(auth.userId && !auth.orgId && req.nextUrl.pathname !== '/select-org') {
         const orgSelection = new URL('/select-org', req.url);
 
