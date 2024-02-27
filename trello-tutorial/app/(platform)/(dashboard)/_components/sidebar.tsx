@@ -41,6 +41,14 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
     []
   );
 
+  if (!isLoadedOrg || !isLoadedList || userMemberships.isLoading) {
+    return (
+      <>
+        <Skeleton />
+      </>
+    );
+  }
+
   const onExpand = (id: string) => {
     setExpanded((curr) => ({ ...curr, [id]: !expanded[id] }));
   };
